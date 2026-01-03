@@ -1,0 +1,15 @@
+/* Custom styles for bigger card and text */
+.joke-card {
+  max-width: 900px; /* Bigger card */
+  padding: 50px; /* More padding inside */
+}
+.joke-setup {
+  font-size: 1.8rem; /* Bigger setup text */
+}
+.joke-punchline {
+  font-size: 2rem; /* Bigger punchline text */
+}
+.refresh-btn {
+  font-size: 1.2rem; /* Bigger button text */
+  padding: 12px 25px;
+}
