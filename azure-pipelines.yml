@@ -19,8 +19,8 @@ variables:
   imagePullSecret: 'jokeappe06c-auth'
 
   # Self-Hosted Agent VM image name
-  pool:
-    name: Self-Hosted
+pool:
+  name: Self-Hosted
 
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
