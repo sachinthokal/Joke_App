@@ -1,14 +1,35 @@
 trigger:
 - main
 
+variables:
+  imageName: joke-app
+  acrName: jokeapp
+  tag: $(Build.BuildId)
+
 pool:
-  name: Self-Hosted   # 👈 tuzya agent pool cha exact naam
+  name: Self-Hosted
 
 steps:
-- script: |
-    echo "Hello from Self-Hosted Agent"
-    echo "Agent Name: $AGENT_NAME"
-    echo "Machine Name: $AGENT_MACHINENAME"
-    uname -a
-    whoami
-  displayName: "Self Hosted Agent Connection Test"
+- task: Docker@2
+  displayName: Build and Push Image
+  inputs:
+    containerRegistry: 'acr-service-connection'
+    repository: '$(imageName)'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(tag)
+
+- task: Kubernetes@1
+  displayName: Deploy to AKS
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'azure-service-connection'
+    azureResourceGroup: 'rg-name'
+    kubernetesCluster: 'aks-name'
+    namespace: 'default'
+    command: apply
+    useConfigurationFile: true
+    configuration: |
+      k8s/deployment.yaml
+      k8s/service.yaml
