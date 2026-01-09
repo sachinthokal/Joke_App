@@ -1,20 +1,23 @@
-# 1. Base image
-FROM python:3.11-slim
+# =============================
+# AKS-Compatible Python Dockerfile
+# =============================
 
-# 2. Set working directory
+# 1️⃣ Use explicit AMD64 base image
+FROM --platform=linux/amd64 python:3.12-slim
+
+# 2️⃣ Set working directory
 WORKDIR /app
 
-# 3. Copy requirements
+# 3️⃣ Install dependencies
 COPY requirements.txt .
-
-# 4. Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy app code
+# 4️⃣ Copy application code
 COPY . .
 
-# 6. Expose port
+# 5️⃣ Expose port (optional, for AKS Service)
 EXPOSE 5000
 
-# 7. Run application
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:app"]
+# 6️⃣ Run the app with Gunicorn
+# Replace `app:app` with your Python module and Flask/FastAPI app object
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:app", "--workers", "2"]

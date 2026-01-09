@@ -1,5 +1,5 @@
 trigger:
-- main
+  - main
 
 variables:
   imageName: joke-app
@@ -16,18 +16,19 @@ stages:
 - stage: Build
   displayName: Build and Push Docker Image
   jobs:
-  - job: BuildJob
-    displayName: Docker Build Job
-    steps:
-    - task: Docker@2
-      displayName: Build and Push Image to ACR
-      inputs:
-        containerRegistry: 'jokeapp-service-connection'
-        repository: '$(imageName)'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: |
-          $(tag)
+    - job: BuildJob
+      displayName: Docker Build Job
+      steps:
+        - task: Docker@2
+          displayName: Build and Push Image to ACR (AMD64)
+          inputs:
+            containerRegistry: 'jokeapp-service-connection'
+            repository: '$(imageName)'
+            command: 'buildAndPush'
+            Dockerfile: '**/Dockerfile'
+            tags: |
+              $(tag)
+            buildArguments: '--platform=linux/amd64'
 
 # =============================
 # STAGE 2: DEPLOY TO AKS
@@ -37,23 +38,24 @@ stages:
   dependsOn: Build
   condition: succeeded()
   jobs:
-  - job: DeployJob
-    displayName: AKS Deploy Job
-    steps:
-    # 🔁 Inject BuildId into manifest
-    - script: |
-        sed -i "s|__TAG__|$(tag)|g" manifests/deployment.yaml
-        echo "Updated deployment.yaml:"
-        cat manifests/deployment.yaml
-      displayName: Replace image tag in manifest
-      
-    - task: Kubernetes@1
-      displayName: Apply Kubernetes Manifests
-      inputs:
-        connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceEndpoint: 'aks-k8s-connection'
-        namespace: 'default'
-        command: 'apply'
-        useConfigurationFile: true
-        configuration: 'manifests/'
+    - job: DeployJob
+      displayName: AKS Deploy Job
+      steps:
+        # 🔁 Replace __TAG__ in all YAML manifests
+        - script: |
+            echo "Replacing __TAG__ with $(tag) in all manifests..."
+            find manifests/ -type f -name "*.yaml" -exec sed -i "s|__TAG__|$(tag)|g" {} \;
+            echo "Updated manifests:"
+            find manifests/ -type f -name "*.yaml" -exec cat {} \;
+          displayName: Replace image tag in manifests
 
+        # ✅ Apply all Kubernetes manifests
+        - task: Kubernetes@1
+          displayName: Apply Kubernetes Manifests
+          inputs:
+            connectionType: 'Kubernetes Service Connection'
+            kubernetesServiceEndpoint: 'aks-k8s-connection'
+            namespace: 'default'
+            command: 'apply'
+            useConfigurationFile: true
+            configuration: 'manifests/'
