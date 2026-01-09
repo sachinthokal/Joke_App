@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: joke-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: joke-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: joke-app
-        image: jokeapp.azurecr.io/joke-app:latest
-        imagePullPolicy: Always
+        image: jokeapp.azurecr.io/joke-app:__TAG__
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
