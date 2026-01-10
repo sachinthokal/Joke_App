@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:app", "--workers", "2"]
+CMD ["python", "-m", "gunicorn", "-b", "0.0.0.0:5000", "main:app", "--workers", "2"]
