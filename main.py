@@ -18,7 +18,7 @@ def get_joke():
         }
     return joke
 
-@app.route("/")
+@app.route("/jokeapp")
 def joke():
     response = get_joke()
     return render_template("index.html", data=response)
