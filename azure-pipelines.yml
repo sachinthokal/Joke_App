@@ -7,7 +7,7 @@ variables:
   tag: $(Build.BuildId)
 
 pool:
-  name: Self-Hosted-Pool
+  name: Default
 
 stages:
 # =============================

@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -9,4 +9,5 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "-m", "waitress", "--listen=0.0.0.0:5000", "main:app"]
+# CMD ["python", "-m", "waitress", "--listen=0.0.0.0:5000", "main:app"]
+CMD ["gunicorn", "main:app", "--bind", "0.0.0.0:5000"]
