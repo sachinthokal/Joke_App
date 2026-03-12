@@ -1,4 +1,4 @@
-name: JOKE-APP-CICD
+name: JOKE APP CICD
 
 on:
   push:

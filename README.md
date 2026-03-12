@@ -110,5 +110,8 @@ http://localhost:5000/
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. 
+
+[![JOKE-APP-CICD](https://github.com/sachinthokal/Joke_App/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/sachinthokal/Joke_App/actions/workflows/docker-publish.yml)
+
 

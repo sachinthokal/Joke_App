@@ -1,15 +1,137 @@
-/* Custom styles for bigger card and text */
+:root {
+  --primary-bg: #0f172a;
+  --accent-pink: #f472b6;
+  --accent-yellow: #fbbf24;
+  --glass-white: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  background-color: var(--primary-bg);
+  font-family: "Space Grotesk", sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Animated Floating Emojis in Background */
+.floating-emoji {
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.2;
+  z-index: 0;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-40px) rotate(20deg);
+  }
+}
+
+/* The Main Joke Card */
 .joke-card {
-  max-width: 900px; /* Bigger card */
-  padding: 50px; /* More padding inside */
+  background: var(--glass-white);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 35px;
+  padding: 50px 30px;
+  max-width: 500px;
+  width: 92%;
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s ease;
 }
-.joke-setup {
-  font-size: 1.8rem; /* Bigger setup text */
+
+.joke-card:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 30px rgba(244, 114, 182, 0.2);
 }
-.joke-punchline {
-  font-size: 2rem; /* Bigger punchline text */
+
+.main-emoji {
+  font-size: 4.5rem;
+  margin-bottom: 25px;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-.refresh-btn {
-  font-size: 1.2rem; /* Bigger button text */
-  padding: 12px 25px;
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.setup {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+
+.punchline {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 35px;
+  animation: revealText 0.5s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+@keyframes revealText {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Action Button */
+.btn-funny {
+  background: linear-gradient(135deg, var(--accent-pink), #8b5cf6);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  box-shadow: 0 10px 20px rgba(244, 114, 182, 0.3);
+}
+
+.btn-funny:hover {
+  transform: scale(1.1) rotate(-2deg);
+  box-shadow: 0 15px 30px rgba(244, 114, 182, 0.5);
+  color: white;
+}
+
+.brand {
+  position: absolute;
+  bottom: 30px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 4px;
 }
